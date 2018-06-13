@@ -19,6 +19,22 @@ class Contact extends Model
     }
 
     /**
+     * return the address flagged as default
+     * there should only be one default address (where can I enforce this?), so
+     * using 'first' should work
+     *
+     * @return Address default address for contact
+     */
+    public function getDefaultAddress()
+    {
+        $address = $this->belongsToMany('App\Address', 'address_contact')->wherePivot('is_default',1)->first();
+        if ($address == ''){
+            $address = new Address;
+        }
+        return $address;
+    }
+
+    /**
      * overide Scout method toSearchableArray to select specific cols to be added to search index
      *
      * @return array

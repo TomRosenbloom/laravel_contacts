@@ -131,9 +131,15 @@ class ContactController extends Controller
      * @param  \App\Contact  $contact
      * @return \Illuminate\Http\Response
      */
-    public function show(Contact $contact)
+    public function show($id)
     {
-        //
+        $contact = Contact::find($id);
+        $address = $contact->getDefaultAddress();
+
+        return view('contacts.show')->with([
+            'contact'=>$contact,
+            'address'=>$address
+        ]);
     }
 
     /**
@@ -142,10 +148,17 @@ class ContactController extends Controller
      * @param  \App\Contact  $contact
      * @return \Illuminate\Http\Response
      */
-    public function edit(Contact $contact)
-    {
-        //
-    }
+     public function edit($id)
+     {
+         $contact = Contact::find($id);
+
+         $address = $contact->getDefaultAddress();
+
+         return view('contacts.edit')->with([
+             'contact'=>$contact,
+             'address'=>$address,
+         ]);
+     }
 
     /**
      * Update the specified resource in storage.
@@ -154,10 +167,69 @@ class ContactController extends Controller
      * @param  \App\Contact  $contact
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Contact $contact)
+    public function update(Request $request, $id, PaginationPageContract $paginationPage)
     {
-        //
+        // bit of DRY violation here...
+         $this->validate($request, [
+             'first_name' => 'required',
+             'last_name' => 'required',
+             'postcode' => 'required'
+         ]);
+
+         $contact = Contact::find($id);
+         $contact->first_name = $request->input('first_name');
+         $contact->last_name = $request->input('last_name');
+         $contact->birth_date = $request->input('birth_date');
+         $contact->save();
+
+         $address = $contact->getDefaultAddress();
+         $address->line_1 = $request->input('line_1');
+         $address->line_2 = $request->input('line_2');
+         $address->city = $request->input('city');
+         $address->postcode = $request->input('postcode');
+         $address->save();
+
+         $page = $paginationPage->getPaginationPage();
+
+        return redirect()->route('contacts.index',['page'=>$page])->with('success', 'Updated contact ' . $contact->first_name . " " . $contact->last_name);
     }
+    // public function update(Request $request, $id, PaginationPageContract $paginationPage, OrgName $OrgName)
+    // {
+    //     $this->validate($request, [
+    //         'name' => 'required',
+    //         'postcode' => 'required'
+    //     ]);
+    //
+    //     $organisation = Organisation::find($id);
+    //     $organisation->name = $request->input('name');
+    //     $organisation->order_name = $OrgName->definiteArticle($request->input('name'));
+    //     $organisation->aims_and_activities = $request->input('aims_and_activities');
+    //     $organisation->postcode = $request->input('postcode');
+    //     $organisation->email = $request->input('email');
+    //     $organisation->telephone = $request->input('telephone');
+    //     $organisation->income_band_id = $request->input('income_band_id');
+    //     $organisation->save();
+    //
+    //     $address = $organisation->getDefaultAddress(); // can we *guarantee* this will be the right one?
+    //     $address->line_1 = $request->input('line_1');
+    //     $address->line_2 = $request->input('line_2');
+    //     $address->city = $request->input('city');
+    //     $address->postcode = $request->input('postcode');
+    //
+    //     $address->save();
+    //
+    //     $sync_data = [];
+    //     foreach($request->input('organisation_type') as $orgtype){
+    //         if(isset($orgtype['id'])){
+    //             $sync_data[$orgtype['id']] = array('reg_num'=>$orgtype['reg_num']);
+    //         }
+    //     }
+    //     $organisation->organisation_types()->sync($sync_data);
+    //
+    //     $page = $paginationPage->getPaginationPage();
+    //
+    //     return redirect()->route('organisations.index',['page'=>$page])->with('success', 'Updated organisation ' . $organisation->name);
+    // }
 
     /**
      * Remove the specified resource from storage.
@@ -165,8 +237,15 @@ class ContactController extends Controller
      * @param  \App\Contact  $contact
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Contact $contact)
+    public function destroy($id, PaginationPageContract $paginationPage)
     {
-        //
+        $contact = Contact::find($id);
+        $contact->delete();
+
+        $page = $paginationPage->getPaginationPage();
+        if($page > $this->numPages){
+            $page = $this->numPages;
+        }
+        return redirect()->route('contacts.index',['page'=>$page])->with('success', 'Deleted contact ' . $contact->name);
     }
 }

@@ -32,7 +32,7 @@
     </div>
     <div class="form-group col-md-2">
         {{Form::label('postcode', 'Postcode')}}
-        {{Form::text('postcode', $contact->postcode, ['class'=>'form-control', 'placeholder'=>'Postcode'])}}
+        {{Form::text('postcode', $address->postcode, ['class'=>'form-control', 'placeholder'=>'Postcode'])}}
     </div>
 </div>
 

@@ -1,7 +1,7 @@
 @extends('layouts.master')
 
 @section('title')
-    Organisation show
+    Contact show
 @endsection
 
 
@@ -12,7 +12,7 @@
         <div class="card-header">
             <div class="row">
                 <div class="col-sm-9">
-                    <h2 class="card-title">{{$organisation->name}}</h2>
+                    <h2 class="card-title">{{$contact->first_name}} {{$contact->last_name}}</h2>
                 </div>
                 <div class="col-sm-3">
                     <i class="fa fa-external-link"></i>
@@ -26,12 +26,6 @@
         <div class="card-body">
 
             <dl class="row">
-                <dt class="col-sm-2">
-                Aims and activities
-                </dt>
-                <dd class="col-sm-10">
-                {!!$organisation->aims_and_activities!!}
-                </dd>
                 <dt class="col-sm-2">
                 Address
                 </dt>
@@ -54,30 +48,16 @@
                 Tel.
                 </dt>
                 <dd class="col-sm-10">
-                {{$organisation->telephone}}
+                {{$contact->telephone}}
                 </dd>
                 <dt class="col-sm-2">
                 Email
                 </dt>
                 <dd class="col-sm-10">
-                {{$organisation->email}}
+                {{$contact->email}}
                 </dd>
             </dl>
 
-            <div class="collapse" id="collapseExample">
-                <dl class="row">
-                    <dt class="col-sm-2">Income</dt>
-                    <dd class="col-sm-10">
-                        {!!$organisation->income_band->textual!!}
-                    </dd>
-                    <dt class="col-sm-2">Type(s)</dt>
-                    <dd class="col-sm-10">
-                        @foreach($organisation->organisation_types as $type)
-                            {{$type->name}} {{$type->pivot->reg_num}}<br />
-                        @endforeach
-                    </dd>
-                </dl>
-            </div>
 
 
             <div class="form-row mb-3">
@@ -96,13 +76,13 @@
 
             <div class="form-row">
                 <div class="col-1">
-                    {!!Form::open(['action' => ['OrganisationController@edit', $organisation->id], 'method' => 'GET'])!!}
+                    {!!Form::open(['action' => ['ContactController@edit', $contact->id], 'method' => 'GET'])!!}
                         {{Form::submit('Edit',['class' => 'btn btn-primary btn-block'])}}
                     {!!Form::close()!!}
                 </div>
 
                 <div class="col-1">
-                    {!!Form::open(['action' => ['OrganisationController@destroy', $organisation->id], 'method' => 'POST', 'onsubmit' => 'return confirm("Really delete?")'])!!}
+                    {!!Form::open(['action' => ['ContactController@destroy', $contact->id], 'method' => 'POST', 'onsubmit' => 'return confirm("Really delete?")'])!!}
                         {{Form::hidden('_method', 'DELETE')}}
                         {{Form::submit('Delete',['class' => 'btn btn-danger'])}}
                     {!!Form::close()!!}
