@@ -1,7 +1,7 @@
 @extends('layouts.master')
 
 @push('scripts')
-    <script src="js/orgindex.js"></script>
+    <script src="js/contactindex.js"></script>
 @endpush
 
 @section('title')
@@ -73,7 +73,7 @@
 
         @foreach($contacts as $contact)
             <div class="mt-3">
-                <h3><a href="{{ url('/contacts/' . $contact->id) }}">{{$contact->order_name}}</a></h3>
+                <h3><a href="{{ url('/contacts/' . $contact->id) }}">{{$contact->first_name}} {{$contact->last_name}}</a></h3>
             </div>
         @endforeach
 

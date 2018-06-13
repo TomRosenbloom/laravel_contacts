@@ -43,9 +43,8 @@ class ContactController extends Controller
          if($request->input('search_terms')){ // another one!
              $contacts = Contact::search($request->input('search_terms'))->paginate($this->resultsPerPage);
          } else {
-             $contacts = Contact::orderBy('order_name','asc')->paginate($this->resultsPerPage);
+             $contacts = Contact::orderBy('last_name','asc')->paginate($this->resultsPerPage);
          }
-
 
          $paginationPageContract->setPaginationPage($contacts->currentPage());
 
@@ -89,10 +88,42 @@ class ContactController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
-    {
-        //
-    }
+     public function store(Request $request)
+     {
+
+         $this->validate($request, [
+             'first_name' => 'required',
+             'last_name' => 'required',
+             'postcode' => 'required'
+         ]);
+
+         $user_id = Auth::id();
+
+         $contact = new Contact;
+         $contact->first_name = $request->input('first_name');
+         $contact->last_name = $request->input('last_name');
+         $contact->birth_date = $request->input('birth_date');
+         $contact->save();
+
+         $address = new Address;
+         $address->line_1 = $request->input('line_1');
+         $address->line_2 = $request->input('line_2');
+         $address->city = $request->input('city');
+         $address->postcode = $request->input('postcode');
+         $address->save();
+
+         $contact->addresses()->attach($address,['is_default' => 1]);
+
+         // $attach_data = [];
+         // foreach($request->input('organisation_type') as $orgtype){
+         //     if(isset($orgtype['id'])){
+         //         $attach_data[$orgtype['id']] = array('reg_num'=>$orgtype['reg_num']);
+         //     }
+         // }
+         // $organisation->organisation_types()->attach($attach_data);
+
+         return redirect('/contacts')->with('success', 'Added contact ' . $contact->first_name . " "  . $contact->last_name);
+     }
 
     /**
      * Display the specified resource.
