@@ -1,7 +1,7 @@
 <div class="form-row">
     <div class="form-group col-md-1">
         {{Form::label('title', 'Title')}}
-        {{Form::select('title', $titles, $contact->title, ['class'=>'form-control'])}}
+        {{Form::select('title', ['' => ''] + $titles, $contact->title, ['class'=>'form-control'])}}
     </div>
     <div class="form-group col-md-3" id="first_name-input">
         {{Form::label('first_name', 'First name')}}
@@ -23,15 +23,9 @@
     </div>
 </div>
 <div class="form-row">
-    <div class="form-group col-md-6">
-            {{Form::label('line_2', 'Address 2')}}
-            {{Form::text('line_2', $address->line_2, ['class'=>'form-control', 'placeholder'=>'Second line of address'])}}
-    </div>
-</div>
-<div class="form-row">
     <div class="form-group col-md-4">
         {{Form::label('city', 'City')}}
-        {{Form::select('city', $cities, $address->city, ['class'=>'form-control'])}}
+        {{Form::select('city', ['' => ''] + $cities, $address->city, ['class'=>'form-control'])}}
     </div>
     <div class="form-group col-md-2">
         {{Form::label('postcode', 'Postcode')}}

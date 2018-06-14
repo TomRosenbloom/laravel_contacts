@@ -67,12 +67,16 @@ class ContactController extends Controller
     {
         $contact = new Contact; // empty instance to prevent 'non-oject' error in form conditional
         $address = new Address; // empty instance to prevent 'non-oject' error in form conditional
-        $cities = City::all()->pluck('name')->toArray();
+        $cities = City::all();
+        $citiesArray = array();
+        foreach($cities as $city){
+            $citiesArray[$city->id] = $city->name;
+        }
         $titles = Honorific::all()->pluck('name')->toArray();
         return view('contacts.create')->with([
             'contact'=>$contact,
             'address'=>$address,
-            'cities'=>$cities,
+            'cities'=>$citiesArray,
             'titles'=>$titles
         ]);
     }
@@ -148,13 +152,21 @@ class ContactController extends Controller
          $contact = Contact::find($id);
          $address = $contact->getDefaultAddress();
          $cities = City::all()->pluck('name')->toArray();
-         $titles = Honorific::all()->pluck('name')->toArray();
-
+         $titles = Honorific::all();
+         $titlesArray = array();
+         foreach($titles as $title){
+             $titlesArray[$title->id] = $title->name;
+         }
+         $cities = City::all();
+         $citiesArray = array();
+         foreach($cities as $city){
+             $citiesArray[$city->id] = $city->name;
+         }
          return view('contacts.edit')->with([
              'contact'=>$contact,
              'address'=>$address,
-             'cities'=>$cities,
-             'titles'=>$titles
+             'cities'=>$citiesArray,
+             'titles'=>$titlesArray
          ]);
      }
 
