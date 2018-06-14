@@ -15,6 +15,6 @@ class Contact_typesTableSeeder extends Seeder
             ['name'=>'Customer'],
             ['name'=>'Supplier'],
         );
-        DB::table('cities')->insert($types);
+        DB::table('contact_types')->insert($types);
     }
 }

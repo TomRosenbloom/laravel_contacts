@@ -1,11 +1,14 @@
 <div class="form-row">
-    <div class="form-group col-md-8" id="first_name-input">
+    <div class="form-group col-md-1">
+        {{Form::label('title', 'Title')}}
+        {{Form::select('title', $titles, $contact->title, ['class'=>'form-control'])}}
+    </div>
+    <div class="form-group col-md-3" id="first_name-input">
         {{Form::label('first_name', 'First name')}}
         {{Form::text('first_name', $contact->first_name, ['class'=>'form-control', 'placeholder'=>'First name', 'autocomplete' => 'no'])}}
     </div>
-</div>
-<div class="form-row">
-    <div class="form-group col-md-8" id="last_name-input">
+
+    <div class="form-group col-md-3" id="last_name-input">
         {{Form::label('last_name', 'Last name')}}
         {{Form::text('last_name', $contact->last_name, ['class'=>'form-control', 'placeholder'=>'Last name', 'autocomplete' => 'no'])}}
         <div id="matches">

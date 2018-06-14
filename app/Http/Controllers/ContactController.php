@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Contact;
 use App\Address;
 use App\City;
+use App\Honorific;
 
 use App\Helpers\Contracts\PaginationPageContract;
 
@@ -65,24 +66,15 @@ class ContactController extends Controller
     public function create()
     {
         $contact = new Contact; // empty instance to prevent 'non-oject' error in form conditional
-        $address = new Address; // ditto
+        $address = new Address; // empty instance to prevent 'non-oject' error in form conditional
         $cities = City::all()->pluck('name')->toArray();
+        $titles = Honorific::all()->pluck('name')->toArray();
         return view('contacts.create')->with([
             'contact'=>$contact,
             'address'=>$address,
-            'cities'=>$cities
+            'cities'=>$cities,
+            'titles'=>$titles
         ]);
-
-        // $income_bands = IncomeBand::all()->pluck('textual');
-        // $organisation_types = OrganisationType::all();
-        // $organisation = new Organisation; // empty instance to prevent 'non-oject' error in form conditional
-        // $address = new Address; // ditto. NB you can do conditionals in the form, but that is a serious PITA
-        // return view('organisations.create')->with([
-        //     'organisation'=>$organisation,
-        //     'address'=>$address,
-        //     'income_bands'=>$income_bands,
-        //     'organisation_types'=>$organisation_types
-        // ]);
     }
 
     /**
@@ -154,14 +146,15 @@ class ContactController extends Controller
      public function edit($id)
      {
          $contact = Contact::find($id);
-
          $address = $contact->getDefaultAddress();
          $cities = City::all()->pluck('name')->toArray();
+         $titles = Honorific::all()->pluck('name')->toArray();
 
          return view('contacts.edit')->with([
              'contact'=>$contact,
              'address'=>$address,
-             'cities'=>$cities
+             'cities'=>$cities,
+             'titles'=>$titles
          ]);
      }
 
