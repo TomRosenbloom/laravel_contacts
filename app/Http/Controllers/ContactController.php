@@ -54,7 +54,7 @@ class ContactController extends Controller
              'contacts' => $contacts,
              'page' => $contacts->currentPage(),
              'num_items' => $this->resultsPerPage,
-             'search_terms' => ''
+             'search_terms' => $request->input('search_terms')
          ]);
      }
 
