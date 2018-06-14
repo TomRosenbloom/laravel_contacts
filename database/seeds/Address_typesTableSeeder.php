@@ -16,6 +16,6 @@ class Address_typesTableSeeder extends Seeder
             ['name'=>'Work'],
             ['name'=>'Billing'],
         );
-        DB::table('citys')->insert($types);
+        DB::table('address_types')->insert($types);
     }
 }

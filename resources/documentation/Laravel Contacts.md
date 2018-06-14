@@ -4,6 +4,8 @@
 
 In the resources controller created from artisan, the param passed to methods update, store etc. is Contact model rather than an id. For now I'm using id just to get up and running, but look into this...
 
+For selecting city, there should be an 'add city' button with the dropdown
+
 
 
 ## Data structure

@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 
 use App\Contact;
 use App\Address;
+use App\City;
 
 use App\Helpers\Contracts\PaginationPageContract;
 
@@ -64,10 +65,12 @@ class ContactController extends Controller
     public function create()
     {
         $contact = new Contact; // empty instance to prevent 'non-oject' error in form conditional
-        $address = new Address;
+        $address = new Address; // ditto
+        $cities = City::all()->pluck('name')->toArray();
         return view('contacts.create')->with([
             'contact'=>$contact,
-            'address'=>$address
+            'address'=>$address,
+            'cities'=>$cities
         ]);
 
         // $income_bands = IncomeBand::all()->pluck('textual');
@@ -153,10 +156,12 @@ class ContactController extends Controller
          $contact = Contact::find($id);
 
          $address = $contact->getDefaultAddress();
+         $cities = City::all()->pluck('name')->toArray();
 
          return view('contacts.edit')->with([
              'contact'=>$contact,
              'address'=>$address,
+             'cities'=>$cities
          ]);
      }
 

@@ -2,7 +2,7 @@
 
 use Illuminate\Database\Seeder;
 
-class CitysTableSeeder extends Seeder
+class CitiesTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -18,6 +18,6 @@ class CitysTableSeeder extends Seeder
             ['name'=>'London'],
             ['name'=>'New York'],
         );
-        DB::table('citys')->insert($cities);
+        DB::table('cities')->insert($cities);
     }
 }

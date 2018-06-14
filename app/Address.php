@@ -10,4 +10,9 @@ class Address extends Model
     {
         return $this->belongsToMany('App\Contact');
     }
+
+    public function city()
+    {
+        return $this->belongsTo('App\City');
+    }
 }
